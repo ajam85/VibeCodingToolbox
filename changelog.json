@@ -1,0 +1,74 @@
+[
+  {
+    "version": "1.2.0",
+    "date": "2026-09-11",
+    "changes": {
+      "cs": [
+        "Přidán světlý režim vzhledu",
+        "Odebrán panel nabídky File/Edit/View...",
+        "Verzreport a jazyk přesunuty pod ikonu ozubeného kola v pásu s projekty",
+        "Přidána anglická lokalizace celé aplikace"
+      ],
+      "en": [
+        "Added a light appearance theme",
+        "Removed the File/Edit/View menu bar",
+        "Version report and language moved under the gear icon in the project sidebar",
+        "Added English localization for the whole app"
+      ]
+    }
+  },
+  {
+    "version": "1.1.0",
+    "date": "2026-09-10",
+    "changes": {
+      "cs": [
+        "Přejmenováno na VibeCoding Toolbox",
+        "Přidán verzreport aplikace",
+        "Založeno verzování aplikace a souborů (changelog.json)"
+      ],
+      "en": [
+        "Renamed to VibeCoding Toolbox",
+        "Added an in-app version report",
+        "Introduced app and file versioning (changelog.json)"
+      ]
+    }
+  },
+  {
+    "version": "1.0.1",
+    "date": "2026-09-10",
+    "changes": {
+      "cs": ["Přidána podpora portable buildu (electron-builder, npm run dist)"],
+      "en": ["Added portable build support (electron-builder, npm run dist)"]
+    }
+  },
+  {
+    "version": "1.0.0",
+    "date": "2026-09-10",
+    "changes": {
+      "cs": [
+        "Přepracováno rozhraní na záložky projektů",
+        "Přidán popis projektu a poznámkový checklist s tlačítkem Kopírovat vše"
+      ],
+      "en": [
+        "Reworked the interface into project tabs",
+        "Added a project description and a notes checklist with a Copy all button"
+      ]
+    }
+  },
+  {
+    "version": "0.2.0",
+    "date": "2026-09-10",
+    "changes": {
+      "cs": ["Přidána možnost editace existujícího projektu (název, cesta, repo)"],
+      "en": ["Added the ability to edit an existing project (name, path, repo)"]
+    }
+  },
+  {
+    "version": "0.1.0",
+    "date": "2026-09-10",
+    "changes": {
+      "cs": ["První verze: seznam projektů a tlačítko GitHub pro nahrání/aktualizaci"],
+      "en": ["First version: project list and a GitHub button to push/update"]
+    }
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "name": "vibecoding-toolbox",
+  "version": "1.2.0",
+  "description": "Správa vibecoding projektů - poznámky, popisy a nahrávání na GitHub jedním tlačítkem.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.local.vibecoding-toolbox",
+    "productName": "VibeCoding Toolbox",
+    "files": [
+      "main.js",
+      "preload.js",
+      "changelog.json",
+      "renderer/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "portable"
+    },
+    "portable": {
+      "artifactName": "${productName}-${version}-portable.exe"
+    }
+  }
+}

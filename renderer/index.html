@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline';" />
+<title>VibeCoding Toolbox</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="app-brand">VibeCoding Toolbox</div>
+    <div class="sidebar-header">
+      <span data-i18n="projects">Projekty</span>
+      <div class="sidebar-header-actions">
+        <button id="settings-gear-btn" class="btn-icon-add" title="Nastavení">⚙</button>
+        <button id="add-btn" class="btn-icon-add" title="Přidat projekt">+</button>
+      </div>
+    </div>
+    <div id="tab-list" class="tab-list"></div>
+  </aside>
+
+  <main class="main-panel">
+    <div id="empty-hint" class="empty-hint hidden" data-i18n="emptyHint">
+      Zatím tu nemáš žádný projekt. Přidej ho tlačítkem „+" vlevo nahoře.
+    </div>
+
+    <div id="panel-content" class="panel-content hidden">
+      <div class="panel-header">
+        <div>
+          <h1 id="panel-title"></h1>
+          <p id="panel-meta" class="panel-meta"></p>
+        </div>
+        <div class="panel-toolbar">
+          <button id="sync-btn" class="btn btn-primary" data-i18n="github">GitHub</button>
+          <button id="settings-btn" class="btn btn-outline" data-i18n="edit">Upravit</button>
+          <button id="remove-btn" class="btn-icon" title="Odebrat projekt">✕</button>
+        </div>
+      </div>
+
+      <label class="section-label" for="description-box" data-i18n="projectDescription">Popis projektu</label>
+      <textarea id="description-box" class="description-box" rows="3" data-i18n-placeholder="projectDescriptionPlaceholder" placeholder="Krátce, o co v projektu jde..."></textarea>
+
+      <div class="notes-header">
+        <span class="section-label" data-i18n="notes">Poznámky</span>
+        <button id="copy-all-btn" class="btn btn-outline btn-small" data-i18n="copyAll">Kopírovat vše</button>
+      </div>
+
+      <div id="notes-list" class="notes-list"></div>
+
+      <div class="add-note-row">
+        <input id="new-note-input" type="text" data-i18n-placeholder="newNotePlaceholder" placeholder="Nová poznámka... (Enter pro přidání)" />
+        <button id="add-note-btn" class="btn btn-outline btn-small" data-i18n="add">Přidat</button>
+      </div>
+    </div>
+
+    <section class="log-panel">
+      <div class="log-panel-header" data-i18n="progress">Průběh</div>
+      <pre id="log-output" class="log-output" data-i18n="logPlaceholder">Tady se zobrazí průběh nahrávání na GitHub...</pre>
+    </section>
+  </main>
+</div>
+
+<div id="add-dialog" class="dialog-overlay hidden">
+  <div class="dialog">
+    <h2 id="dialog-title">Nový projekt</h2>
+
+    <label class="field">
+      <span data-i18n="projectName">Název projektu</span>
+      <input id="input-name" type="text" data-i18n-placeholder="projectNamePlaceholder" placeholder="např. Moje Android app" />
+    </label>
+
+    <label class="field">
+      <span data-i18n="sourceFolder">Zdrojová složka</span>
+      <div class="path-row">
+        <input id="input-source" type="text" readonly data-i18n-placeholder="sourceFolderPlaceholder" placeholder="vyber složku na disku" />
+        <button id="pick-folder-btn" class="btn btn-outline" data-i18n="choose">Vybrat...</button>
+      </div>
+    </label>
+
+    <label class="field">
+      <span data-i18n="repoUrl">GitHub repozitář (URL)</span>
+      <input id="input-repo" type="text" placeholder="https://github.com/uzivatel/repo.git" />
+    </label>
+
+    <p id="add-error" class="field-error hidden"></p>
+
+    <div class="dialog-actions">
+      <button id="cancel-add-btn" class="btn btn-ghost" data-i18n="cancel">Zrušit</button>
+      <button id="confirm-add-btn" class="btn btn-primary">Přidat projekt</button>
+    </div>
+  </div>
+</div>
+
+<div id="settings-dialog" class="dialog-overlay hidden">
+  <div class="dialog">
+    <h2 data-i18n="appSettings">Nastavení aplikace</h2>
+
+    <div class="settings-group">
+      <span class="section-label" data-i18n="language">Jazyk</span>
+      <div class="toggle-group" id="language-toggle">
+        <button class="toggle-btn" data-value="cs">Čeština</button>
+        <button class="toggle-btn" data-value="en">English</button>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <span class="section-label" data-i18n="appearance">Vzhled</span>
+      <div class="toggle-group" id="theme-toggle">
+        <button class="toggle-btn" data-value="dark" data-i18n="dark">Tmavý</button>
+        <button class="toggle-btn" data-value="light" data-i18n="light">Světlý</button>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <button id="open-version-btn" class="btn btn-outline" data-i18n="openVersionReport">Zobrazit verzreport</button>
+    </div>
+
+    <div class="dialog-actions">
+      <button id="close-settings-btn" class="btn btn-outline" data-i18n="close">Zavřít</button>
+    </div>
+  </div>
+</div>
+
+<div id="version-dialog" class="dialog-overlay hidden">
+  <div class="dialog">
+    <h2 data-i18n="versionReport">Verzreport</h2>
+    <p id="version-current" class="version-current"></p>
+    <div id="version-list" class="version-list"></div>
+    <div class="dialog-actions">
+      <button id="close-version-btn" class="btn btn-outline" data-i18n="close">Zavřít</button>
+    </div>
+  </div>
+</div>
+
+<script src="renderer.js"></script>
+</body>
+</html>
