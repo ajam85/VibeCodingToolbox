@@ -18,9 +18,10 @@ const translations = {
     logPlaceholder: "Tady se zobrazí průběh nahrávání na GitHub...",
     projectName: "Název projektu",
     projectNamePlaceholder: "např. Moje Android app",
-    sourceFolder: "Zdrojová složka",
-    sourceFolderPlaceholder: "vyber složku na disku",
-    repoUrl: "GitHub repozitář (URL)",
+    sourceFolder: "Zdrojová složka (volitelné)",
+    sourceFolderPlaceholder: "vyber složku na disku, nebo nech prázdné",
+    repoUrl: "GitHub repozitář (volitelné)",
+    repoUrlPlaceholder: "https://github.com/uzivatel/repo.git",
     choose: "Vybrat...",
     cancel: "Zrušit",
     appSettings: "Nastavení aplikace",
@@ -35,13 +36,34 @@ const translations = {
     editProjectSettings: "Nastavení projektu",
     addProjectBtn: "Přidat projekt",
     saveChanges: "Uložit změny",
-    fillAllFields: "Vyplň prosím všechna pole.",
+    removeProject: "Odebrat projekt",
+    fillAllFields: "Vyplň prosím alespoň název projektu.",
     repoUrlError:
       "Adresa repozitáře by měla vypadat jako\nhttps://github.com/uzivatel/repo.git",
     notUploadedYet: "Ještě nenahráno",
     lastUploaded: (date) => `Naposledy nahráno ${date}`,
     confirmRemove: (name) => `Opravdu odebrat projekt „${name}" ze seznamu?`,
     currentVersion: (v) => `Aktuální verze: ${v}`,
+    ideaOnly: "Zatím jen nápad – bez složky a repozitáře",
+    sourceNotSet: "složka nenastavena",
+    repoNotSet: "repozitář nenastaven",
+    syncNeedsSetup: "Nejdřív v Nastavení doplň složku a GitHub repozitář.",
+    descriptionLockedHint: "Upravíš v Nastavení projektu",
+    noDescriptionYet: "Zatím bez popisu – klikni pro doplnění v Nastavení projektu.",
+    history: "Historie",
+    uploadHistory: "Historie nahrávání",
+    noHistoryYet: "Zatím žádné nahrání.",
+    whatChanged: "Co se v projektu změnilo?",
+    whatChangedHint: "Každý řádek = jedna změna. Necháš-li prázdné, nahraje se bez popisu.",
+    whatChangedPlaceholder:
+      "Přidáno: přihlašovací obrazovka\nOpraveno: pád při ukládání\nOdebráno: staré nastavení",
+    autoloadedHint: "Načteno automaticky ze souboru VIBECODING_CHANGES.txt v projektu.",
+    uploadConfirm: "Nahrát",
+    masterPromptLabel: "Prompt pro Claude (vlož na začátek práce na projektu)",
+    copyPrompt: "Kopírovat prompt",
+    promptCopied: "Zkopírováno",
+    masterPromptText: (name) =>
+      `Pracujeme spolu na projektu${name ? ` „${name}"` : ""}, který budu nahrávat přes aplikaci VibeCoding Toolbox.\n\nProsím: kdykoliv na konci naší práce provedeš nebo shrneš změny v kódu tohoto projektu, zapiš (nebo aktualizuj) v kořeni projektu soubor VIBECODING_CHANGES.txt.\n\nKaždý řádek = jedna funkční změna, srozumitelně pro člověka, ve tvaru:\nPřidáno: ...\nOpraveno: ...\nOdebráno: ...\nZměněno: ...\n\nPokud soubor už existuje a jeho obsah ještě nebyl nahrán na GitHub, nové změny k němu přidej, nepřepisuj starý obsah. Nepiš tam nic technického (čísla řádků, názvy commitů) - jen jasné shrnutí pro člověka, který si to přečte před nahráním.`,
   },
   en: {
     projects: "Projects",
@@ -60,9 +82,10 @@ const translations = {
     logPlaceholder: "The GitHub upload progress will appear here...",
     projectName: "Project name",
     projectNamePlaceholder: "e.g. My Android app",
-    sourceFolder: "Source folder",
-    sourceFolderPlaceholder: "choose a folder on disk",
-    repoUrl: "GitHub repository (URL)",
+    sourceFolder: "Source folder (optional)",
+    sourceFolderPlaceholder: "choose a folder on disk, or leave empty",
+    repoUrl: "GitHub repository (optional)",
+    repoUrlPlaceholder: "https://github.com/username/repo.git",
     choose: "Choose...",
     cancel: "Cancel",
     appSettings: "App settings",
@@ -77,13 +100,34 @@ const translations = {
     editProjectSettings: "Project settings",
     addProjectBtn: "Add project",
     saveChanges: "Save changes",
-    fillAllFields: "Please fill in all fields.",
+    removeProject: "Remove project",
+    fillAllFields: "Please fill in at least the project name.",
     repoUrlError:
       "The repository address should look like\nhttps://github.com/username/repo.git",
     notUploadedYet: "Not uploaded yet",
     lastUploaded: (date) => `Last uploaded ${date}`,
     confirmRemove: (name) => `Remove project "${name}" from the list?`,
     currentVersion: (v) => `Current version: ${v}`,
+    ideaOnly: "Just an idea for now – no folder or repo yet",
+    sourceNotSet: "folder not set",
+    repoNotSet: "repo not set",
+    syncNeedsSetup: "First add a folder and GitHub repo in Settings.",
+    descriptionLockedHint: "Edit it in Project settings",
+    noDescriptionYet: "No description yet – click to add one in Project settings.",
+    history: "History",
+    uploadHistory: "Upload history",
+    noHistoryYet: "No uploads yet.",
+    whatChanged: "What changed in the project?",
+    whatChangedHint: "One line = one change. Leave it empty to upload without a description.",
+    whatChangedPlaceholder:
+      "Added: login screen\nFixed: crash on save\nRemoved: old settings page",
+    autoloadedHint: "Auto-loaded from VIBECODING_CHANGES.txt in the project folder.",
+    uploadConfirm: "Upload",
+    masterPromptLabel: "Prompt for Claude (paste at the start of working on the project)",
+    copyPrompt: "Copy prompt",
+    promptCopied: "Copied",
+    masterPromptText: (name) =>
+      `We're working together on the project${name ? ` "${name}"` : ""}, which I'll be uploading with the VibeCoding Toolbox app.\n\nPlease: whenever you finish or summarize code changes on this project in a session, write (or update) a file named VIBECODING_CHANGES.txt in the project root.\n\nOne line = one functional change, written for a human, in this style:\nAdded: ...\nFixed: ...\nRemoved: ...\nChanged: ...\n\nIf the file already exists and its contents haven't been uploaded to GitHub yet, add the new changes to it instead of overwriting it. Don't include technical details (line numbers, commit hashes) - just a clear summary for a human to read before uploading.`,
   },
 };
 
@@ -119,7 +163,6 @@ const logOutput = document.getElementById("log-output");
 
 const syncBtn = document.getElementById("sync-btn");
 const settingsBtn = document.getElementById("settings-btn");
-const removeBtn = document.getElementById("remove-btn");
 
 const descriptionBox = document.getElementById("description-box");
 const notesList = document.getElementById("notes-list");
@@ -137,7 +180,11 @@ const dialogTitle = document.getElementById("dialog-title");
 const inputName = document.getElementById("input-name");
 const inputSource = document.getElementById("input-source");
 const inputRepo = document.getElementById("input-repo");
+const inputDescription = document.getElementById("input-description");
+const masterPromptBox = document.getElementById("master-prompt-box");
+const copyMasterPromptBtn = document.getElementById("copy-master-prompt-btn");
 const addError = document.getElementById("add-error");
+const deleteProjectBtn = document.getElementById("delete-project-btn");
 
 const settingsGearBtn = document.getElementById("settings-gear-btn");
 const settingsDialog = document.getElementById("settings-dialog");
@@ -150,6 +197,17 @@ const versionDialog = document.getElementById("version-dialog");
 const versionCurrent = document.getElementById("version-current");
 const versionListEl = document.getElementById("version-list");
 const closeVersionBtn = document.getElementById("close-version-btn");
+
+const historyBtn = document.getElementById("history-btn");
+const historyDialog = document.getElementById("history-dialog");
+const historyListEl = document.getElementById("history-list");
+const closeHistoryBtn = document.getElementById("close-history-btn");
+
+const changesDialog = document.getElementById("changes-dialog");
+const changesInput = document.getElementById("changes-input");
+const changesAutoloadHint = document.getElementById("changes-autoload-hint");
+const cancelChangesBtn = document.getElementById("cancel-changes-btn");
+const confirmChangesBtn = document.getElementById("confirm-changes-btn");
 
 let projects = [];
 let activeProjectId = null;
@@ -191,6 +249,20 @@ function renderTabs() {
 
 // --- main panel ---
 
+function buildMetaLine(project) {
+  let pathPart;
+  if (project.source && project.repo) {
+    pathPart = `${project.source} → ${project.repo}`;
+  } else if (!project.source && !project.repo) {
+    pathPart = t("ideaOnly");
+  } else if (project.source) {
+    pathPart = `${project.source} → (${t("repoNotSet")})`;
+  } else {
+    pathPart = `(${t("sourceNotSet")}) → ${project.repo}`;
+  }
+  return `${pathPart}   ·   ${formatDate(project.lastSync)}`;
+}
+
 function renderPanel() {
   const project = getActiveProject();
 
@@ -200,13 +272,16 @@ function renderPanel() {
   if (!project) return;
 
   panelTitle.textContent = project.name;
-  panelMeta.textContent = `${project.source} → ${project.repo}   ·   ${formatDate(project.lastSync)}`;
+  panelMeta.textContent = buildMetaLine(project);
 
+  const canSync = !!(project.source && project.repo);
   const isSyncing = syncingId === project.id;
   syncBtn.textContent = isSyncing ? t("syncing") : t("github");
-  syncBtn.disabled = isSyncing;
+  syncBtn.disabled = isSyncing || !canSync;
+  syncBtn.title = canSync ? "" : t("syncNeedsSetup");
 
-  descriptionBox.value = project.description || "";
+  descriptionBox.value = project.description || t("noDescriptionYet");
+  descriptionBox.classList.toggle("is-placeholder", !project.description);
   requestAnimationFrame(() => autoResize(descriptionBox));
 
   renderNotes(project);
@@ -214,7 +289,7 @@ function renderPanel() {
 
 function renderNotes(project) {
   notesList.innerHTML = "";
-  const notes = project.notes || [];
+  const notes = [...(project.notes || [])].sort((a, b) => Number(b.id) - Number(a.id));
 
   for (const note of notes) {
     const row = document.createElement("div");
@@ -273,13 +348,11 @@ function updateLocalProject(id, updater) {
   if (idx >= 0) updater(projects[idx]);
 }
 
-// --- description ---
+// --- description (needitovatelné, úprava jen přes Nastavení projektu) ---
 
-descriptionBox.addEventListener("input", () => autoResize(descriptionBox));
-descriptionBox.addEventListener("blur", async () => {
+descriptionBox.addEventListener("click", () => {
   const project = getActiveProject();
-  if (!project) return;
-  await persistProject(project.id, { description: descriptionBox.value });
+  if (project) openDialog(project);
 });
 
 // --- notes ---
@@ -336,7 +409,7 @@ newNoteInput.addEventListener("keydown", (e) => {
 copyAllBtn.addEventListener("click", async () => {
   const project = getActiveProject();
   if (!project) return;
-  const notes = project.notes || [];
+  const notes = [...(project.notes || [])].sort((a, b) => Number(b.id) - Number(a.id));
   const text = notes.map((n) => `[${n.done ? "x" : " "}] ${n.text}`).join("\n");
   await navigator.clipboard.writeText(text);
 
@@ -351,11 +424,34 @@ syncBtn.addEventListener("click", async () => {
   const project = getActiveProject();
   if (!project) return;
 
+  const pending = project.source ? await window.api.getPendingChanges(project.source) : null;
+  changesInput.value = pending ? pending.trim() : "";
+  changesAutoloadHint.classList.toggle("hidden", !pending);
+
+  changesDialog.classList.remove("hidden");
+  changesInput.focus();
+});
+
+cancelChangesBtn.addEventListener("click", () => {
+  changesDialog.classList.add("hidden");
+});
+
+confirmChangesBtn.addEventListener("click", async () => {
+  const project = getActiveProject();
+  if (!project) return;
+
+  const changeNotes = changesInput.value
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+
+  changesDialog.classList.add("hidden");
+
   syncingId = project.id;
   renderPanel();
   logOutput.textContent = "";
 
-  const result = await window.api.syncProject(project.id, currentLanguage);
+  const result = await window.api.syncProject(project.id, currentLanguage, changeNotes);
 
   syncingId = null;
   await loadProjects();
@@ -364,20 +460,38 @@ syncBtn.addEventListener("click", async () => {
   logOutput.scrollTop = logOutput.scrollHeight;
 });
 
-// --- remove project ---
+// --- remove project (přesunuto do dialogu Nastavení projektu) ---
 
-removeBtn.addEventListener("click", async () => {
-  const project = getActiveProject();
+deleteProjectBtn.addEventListener("click", async () => {
+  if (!editingId) return;
+  const project = projects.find((p) => p.id === editingId);
   if (!project) return;
+
   const sure = confirm(t("confirmRemove")(project.name));
   if (!sure) return;
 
   projects = await window.api.removeProject(project.id);
-  activeProjectId = projects.length > 0 ? projects[0].id : null;
+  if (activeProjectId === project.id) {
+    activeProjectId = projects.length > 0 ? projects[0].id : null;
+  }
+  closeDialog();
   renderAll();
 });
 
 // --- add / edit project dialog (název, cesta, repo) ---
+
+function updateMasterPrompt() {
+  masterPromptBox.value = t("masterPromptText")(inputName.value.trim());
+}
+
+inputName.addEventListener("input", updateMasterPrompt);
+
+copyMasterPromptBtn.addEventListener("click", async () => {
+  await navigator.clipboard.writeText(masterPromptBox.value);
+  const original = copyMasterPromptBtn.textContent;
+  copyMasterPromptBtn.textContent = t("promptCopied");
+  setTimeout(() => (copyMasterPromptBtn.textContent = original), 1200);
+});
 
 function openDialog(project) {
   editingId = project ? project.id : null;
@@ -388,14 +502,18 @@ function openDialog(project) {
     inputName.value = project.name;
     inputSource.value = project.source;
     inputRepo.value = project.repo;
+    inputDescription.value = project.description || "";
   } else {
     dialogTitle.textContent = t("newProject");
     confirmAddBtn.textContent = t("addProjectBtn");
     inputName.value = "";
     inputSource.value = "";
     inputRepo.value = "";
+    inputDescription.value = "";
   }
 
+  updateMasterPrompt();
+  deleteProjectBtn.classList.toggle("hidden", !project);
   addError.classList.add("hidden");
   addDialog.classList.remove("hidden");
   inputName.focus();
@@ -424,22 +542,23 @@ confirmAddBtn.addEventListener("click", async () => {
   const name = inputName.value.trim();
   const source = inputSource.value.trim();
   const repo = inputRepo.value.trim();
+  const description = inputDescription.value.trim();
 
-  if (!name || !source || !repo) {
+  if (!name) {
     addError.textContent = t("fillAllFields");
     addError.classList.remove("hidden");
     return;
   }
-  if (!/^https?:\/\/.+\.git$/.test(repo) && !/^git@.+:.+\.git$/.test(repo)) {
+  if (repo && !/^https?:\/\/.+\.git$/.test(repo) && !/^git@.+:.+\.git$/.test(repo)) {
     addError.textContent = t("repoUrlError");
     addError.classList.remove("hidden");
     return;
   }
 
   if (editingId) {
-    projects = await window.api.updateProject(editingId, { name, source, repo });
+    projects = await window.api.updateProject(editingId, { name, source, repo, description });
   } else {
-    projects = await window.api.addProject({ name, source, repo });
+    projects = await window.api.addProject({ name, source, repo, description });
     const newest = projects[projects.length - 1];
     activeProjectId = newest.id;
   }
@@ -536,6 +655,59 @@ openVersionBtn.addEventListener("click", () => {
 });
 closeVersionBtn.addEventListener("click", () => {
   versionDialog.classList.add("hidden");
+});
+
+// --- historie nahrávání projektu ---
+
+function renderHistoryDialog() {
+  const project = getActiveProject();
+  historyListEl.innerHTML = "";
+
+  const history = (project && project.history) || [];
+  if (history.length === 0) {
+    const hint = document.createElement("p");
+    hint.className = "empty-hint";
+    hint.style.padding = "0";
+    hint.textContent = t("noHistoryYet");
+    historyListEl.appendChild(hint);
+    return;
+  }
+
+  const locale = currentLanguage === "en" ? "en-US" : "cs-CZ";
+  for (const entry of history) {
+    const block = document.createElement("div");
+    block.className = "version-entry";
+
+    const dateEl = document.createElement("div");
+    dateEl.className = "history-entry-date";
+    dateEl.textContent = new Date(entry.date).toLocaleString(locale);
+    block.appendChild(dateEl);
+
+    if (entry.changes && entry.changes.length > 0) {
+      const list = document.createElement("ul");
+      for (const change of entry.changes) {
+        const li = document.createElement("li");
+        li.textContent = change;
+        list.appendChild(li);
+      }
+      block.appendChild(list);
+    } else {
+      const pre = document.createElement("pre");
+      pre.className = "history-summary";
+      pre.textContent = entry.diffStat || entry.summary || "";
+      block.appendChild(pre);
+    }
+
+    historyListEl.appendChild(block);
+  }
+}
+
+historyBtn.addEventListener("click", () => {
+  renderHistoryDialog();
+  historyDialog.classList.remove("hidden");
+});
+closeHistoryBtn.addEventListener("click", () => {
+  historyDialog.classList.add("hidden");
 });
 
 window.api.onSyncLog((line) => {

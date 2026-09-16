@@ -14,7 +14,9 @@
     <div class="sidebar-header">
       <span data-i18n="projects">Projekty</span>
       <div class="sidebar-header-actions">
-        <button id="settings-gear-btn" class="btn-icon-add" title="Nastavení">⚙</button>
+        <button id="settings-gear-btn" class="btn-icon-add" title="Nastavení">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
         <button id="add-btn" class="btn-icon-add" title="Přidat projekt">+</button>
       </div>
     </div>
@@ -34,13 +36,16 @@
         </div>
         <div class="panel-toolbar">
           <button id="sync-btn" class="btn btn-primary" data-i18n="github">GitHub</button>
+          <button id="history-btn" class="btn btn-outline" data-i18n="history">Historie</button>
           <button id="settings-btn" class="btn btn-outline" data-i18n="edit">Upravit</button>
-          <button id="remove-btn" class="btn-icon" title="Odebrat projekt">✕</button>
         </div>
       </div>
 
-      <label class="section-label" for="description-box" data-i18n="projectDescription">Popis projektu</label>
-      <textarea id="description-box" class="description-box" rows="3" data-i18n-placeholder="projectDescriptionPlaceholder" placeholder="Krátce, o co v projektu jde..."></textarea>
+      <label class="section-label" for="description-box">
+        <span data-i18n="projectDescription">Popis projektu</span>
+        <span class="section-label-hint" data-i18n="descriptionLockedHint">Upravíš v Nastavení projektu</span>
+      </label>
+      <textarea id="description-box" class="description-box" rows="3" readonly data-i18n-placeholder="projectDescriptionPlaceholder" placeholder="Krátce, o co v projektu jde..."></textarea>
 
       <div class="notes-header">
         <span class="section-label" data-i18n="notes">Poznámky</span>
@@ -81,12 +86,24 @@
 
     <label class="field">
       <span data-i18n="repoUrl">GitHub repozitář (URL)</span>
-      <input id="input-repo" type="text" placeholder="https://github.com/uzivatel/repo.git" />
+      <input id="input-repo" type="text" data-i18n-placeholder="repoUrlPlaceholder" placeholder="https://github.com/uzivatel/repo.git" />
     </label>
+
+    <label class="field">
+      <span data-i18n="projectDescription">Popis projektu</span>
+      <textarea id="input-description" class="field-textarea" rows="3" data-i18n-placeholder="projectDescriptionPlaceholder" placeholder="Krátce, o co v projektu jde..."></textarea>
+    </label>
+
+    <div class="settings-group">
+      <span class="section-label" data-i18n="masterPromptLabel">Prompt pro Claude (vlož na začátek práce na projektu)</span>
+      <textarea id="master-prompt-box" class="changes-textarea" rows="7" readonly></textarea>
+      <button id="copy-master-prompt-btn" class="btn btn-outline btn-small copy-prompt-btn" data-i18n="copyPrompt">Kopírovat prompt</button>
+    </div>
 
     <p id="add-error" class="field-error hidden"></p>
 
     <div class="dialog-actions">
+      <button id="delete-project-btn" class="btn btn-ghost btn-danger hidden" data-i18n="removeProject">Odebrat projekt</button>
       <button id="cancel-add-btn" class="btn btn-ghost" data-i18n="cancel">Zrušit</button>
       <button id="confirm-add-btn" class="btn btn-primary">Přidat projekt</button>
     </div>
@@ -130,6 +147,29 @@
     <div id="version-list" class="version-list"></div>
     <div class="dialog-actions">
       <button id="close-version-btn" class="btn btn-outline" data-i18n="close">Zavřít</button>
+    </div>
+  </div>
+</div>
+
+<div id="history-dialog" class="dialog-overlay hidden">
+  <div class="dialog">
+    <h2 data-i18n="uploadHistory">Historie nahrávání</h2>
+    <div id="history-list" class="version-list"></div>
+    <div class="dialog-actions">
+      <button id="close-history-btn" class="btn btn-outline" data-i18n="close">Zavřít</button>
+    </div>
+  </div>
+</div>
+
+<div id="changes-dialog" class="dialog-overlay hidden">
+  <div class="dialog">
+    <h2 data-i18n="whatChanged">Co se v projektu změnilo?</h2>
+    <p class="dialog-hint" data-i18n="whatChangedHint">Každý řádek = jedna změna. Necháš-li prázdné, nahraje se bez popisu.</p>
+    <p id="changes-autoload-hint" class="dialog-hint dialog-hint-accent hidden" data-i18n="autoloadedHint">Načteno automaticky ze souboru VIBECODING_CHANGES.txt v projektu.</p>
+    <textarea id="changes-input" class="changes-textarea" rows="6" data-i18n-placeholder="whatChangedPlaceholder" placeholder="Přidáno: přihlašovací obrazovka&#10;Opraveno: pád při ukládání&#10;Odebráno: staré nastavení"></textarea>
+    <div class="dialog-actions">
+      <button id="cancel-changes-btn" class="btn btn-ghost" data-i18n="cancel">Zrušit</button>
+      <button id="confirm-changes-btn" class="btn btn-primary" data-i18n="uploadConfirm">Nahrát</button>
     </div>
   </div>
 </div>

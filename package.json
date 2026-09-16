@@ -1,6 +1,6 @@
 {
   "name": "vibecoding-toolbox",
-  "version": "1.2.0",
+  "version": "1.9.2",
   "description": "Správa vibecoding projektů - poznámky, popisy a nahrávání na GitHub jedním tlačítkem.",
   "main": "main.js",
   "scripts": {
@@ -21,13 +21,16 @@
       "preload.js",
       "changelog.json",
       "renderer/**/*",
+      "build/icon.png",
       "package.json"
     ],
     "directories": {
-      "output": "dist"
+      "output": "dist",
+      "buildResources": "build"
     },
     "win": {
-      "target": "portable"
+      "target": "portable",
+      "icon": "build/icon.ico"
     },
     "portable": {
       "artifactName": "${productName}-${version}-portable.exe"

@@ -1,5 +1,139 @@
 [
   {
+    "version": "1.9.2",
+    "date": "2026-09-16",
+    "changes": {
+      "cs": [
+        "Přidána vlastní ikona aplikace (okno i portable .exe)"
+      ],
+      "en": [
+        "Added a custom app icon (window and portable .exe)"
+      ]
+    }
+  },
+  {
+    "version": "1.9.1",
+    "date": "2026-09-15",
+    "changes": {
+      "cs": [
+        "Tlačítko „Odebrat projekt\" přesunuto do stejného řádku jako Zrušit/Uložit v dialogu Nastavení projektu"
+      ],
+      "en": [
+        "\"Remove project\" button moved into the same row as Cancel/Save in the Project settings dialog"
+      ]
+    }
+  },
+  {
+    "version": "1.9.0",
+    "date": "2026-09-14",
+    "changes": {
+      "cs": [
+        "Nová ikona nastavení (ozubené kolo) v pásu s projekty",
+        "Odebrání projektu se přesunulo do dialogu Nastavení projektu, aby nešlo kliknout omylem"
+      ],
+      "en": [
+        "New settings (gear) icon in the project sidebar",
+        "Removing a project moved into the Project settings dialog to prevent accidental clicks"
+      ]
+    }
+  },
+  {
+    "version": "1.8.0",
+    "date": "2026-09-14",
+    "changes": {
+      "cs": [
+        "V Nastavení projektu je nový \"master prompt\" s tlačítkem Kopírovat",
+        "Vlož ho na začátek práce s Claude na projektu - sám pak bude psát VIBECODING_CHANGES.txt za tebe",
+        "Prompt se automaticky přizpůsobí názvu projektu"
+      ],
+      "en": [
+        "Project settings now include a \"master prompt\" with a Copy button",
+        "Paste it at the start of working with Claude on the project - it will then write VIBECODING_CHANGES.txt for you",
+        "The prompt automatically adapts to the project name"
+      ]
+    }
+  },
+  {
+    "version": "1.7.0",
+    "date": "2026-09-14",
+    "changes": {
+      "cs": [
+        "Popis změn se dá i automaticky předvyplnit ze souboru VIBECODING_CHANGES.txt ve složce projektu",
+        "Hodí se, když popis změn napíše rovnou Claude (např. v Claude Code) po dokončení práce na projektu",
+        "Soubor se po nahrání sám smaže a nikdy se nedostane do commitu"
+      ],
+      "en": [
+        "The change description can now be auto-filled from a VIBECODING_CHANGES.txt file in the project folder",
+        "Useful when Claude (e.g. in Claude Code) writes the description right after finishing work on the project",
+        "The file deletes itself after upload and never ends up in the commit"
+      ]
+    }
+  },
+  {
+    "version": "1.6.0",
+    "date": "2026-09-14",
+    "changes": {
+      "cs": [
+        "Před nahráním se teď dá napsat, co se funkčně změnilo (přidáno/opraveno/odebráno)",
+        "Tento popis se zapíše do commitu i do Historie – ve stejném stylu jako verzreport appky",
+        "Bez popisu se pořád dá nahrát rovnou, pak se použije jen technický přehled souborů"
+      ],
+      "en": [
+        "Before uploading, you can now write what functionally changed (added/fixed/removed)",
+        "This description is saved into the commit and into History – in the same style as the app's own version report",
+        "You can still upload without a description; a technical file summary is used instead"
+      ]
+    }
+  },
+  {
+    "version": "1.5.0",
+    "date": "2026-09-14",
+    "changes": {
+      "cs": [
+        "Před každým nahráním se zjistí přesné změny (které soubory, kolik řádků přibylo/ubylo)",
+        "Shrnutí změn se zapíše přímo do zprávy commitu (natrvalo v historii gitu)",
+        "Nové tlačítko „Historie\" u projektu ukazuje shrnutí všech dosavadních nahrání"
+      ],
+      "en": [
+        "Before every upload, exact changes are detected (which files, how many lines added/removed)",
+        "The change summary is written directly into the commit message (permanently in git history)",
+        "New \"History\" button on a project shows a summary of every past upload"
+      ]
+    }
+  },
+  {
+    "version": "1.4.0",
+    "date": "2026-09-11",
+    "changes": {
+      "cs": [
+        "Poznámky se nyní řadí vždy nejnovější nahoře",
+        "Popis projektu se už needituje přímo v panelu, ale v Nastavení projektu (chrání ho to před nechtěnou úpravou)",
+        "Klik na popis v panelu rovnou otevře Nastavení projektu"
+      ],
+      "en": [
+        "Notes are now always sorted with the newest on top",
+        "Project description is no longer edited inline, but in Project settings (protects it from accidental edits)",
+        "Clicking the description in the panel opens Project settings directly"
+      ]
+    }
+  },
+  {
+    "version": "1.3.0",
+    "date": "2026-09-11",
+    "changes": {
+      "cs": [
+        "Zdrojová složka i GitHub repozitář jsou při zakládání projektu volitelné",
+        "Jde tak přidávat i rozvahové projekty, o kterých se zatím jen uvažuje",
+        "Tlačítko GitHub je neaktivní, dokud nejsou obě hodnoty doplněné"
+      ],
+      "en": [
+        "Source folder and GitHub repository are now optional when creating a project",
+        "You can add early-stage / idea projects without them",
+        "The GitHub button stays disabled until both are filled in"
+      ]
+    }
+  },
+  {
     "version": "1.2.0",
     "date": "2026-09-11",
     "changes": {

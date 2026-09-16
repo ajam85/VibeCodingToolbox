@@ -15,6 +15,36 @@ Electron aplikace pro správu více "vibecoding" projektů na jednom místě:
   přepínač jazyka (čeština/English) a vzhledu (tmavý/světlý), odtud se dá
   otevřít i verzreport
 - aplikace nemá horní panel nabídky (File/Edit/View...)
+- tlačítko „Historie" u projektu ukazuje, co se poslalo při každém
+  předchozím nahrání (kolik souborů, kolik řádků přibylo/ubylo) – to samé
+  shrnutí je zapsané i přímo do zprávy commitu v gitu
+- kliknutím na „GitHub" se nejdřív otevře okno „Co se v projektu
+  změnilo?" – tam napíšeš vlastními slovy, co se přidalo/opravilo/
+  odebralo (každý řádek = jedna změna). Tenhle popis se pak zapíše do
+  commitu i do Historie ve stejném stylu jako verzreport appky. Necháš-li
+  pole prázdné, nahraje se jen s technickým přehledem souborů
+
+## Automatické předvyplnění popisu změn (VIBECODING_CHANGES.txt)
+
+Pokud v kořeni složky projektu existuje soubor `VIBECODING_CHANGES.txt`
+(jeden řádek = jedna změna), appka ho při kliknutí na „GitHub" sama načte
+a předvyplní jím okno s popisem změn – nemusíš nic přepisovat ručně, jen
+zkontrolovat a případně upravit. Po úspěšném nahrání se soubor sám smaže
+a do commitu se vůbec nedostane.
+
+Hodí se to takto: až budeš s Claude (třeba v Claude Code) pracovat přímo
+na kódu projektu, na konci mu řekni, ať do složky projektu zapíše soubor
+`VIBECODING_CHANGES.txt` se shrnutím, co udělal. Pak stačí otevřít
+VibeCoding Toolbox a kliknout na GitHub – popis už tam bude.
+
+### Master prompt
+
+Aby sis to nemusel psát pokaždé znovu, v dialogu „Nastavení projektu" je
+připravený „Prompt pro Claude" s tlačítkem **Kopírovat prompt**. Vlož ho
+na úplný začátek práce na projektu (do chatu s Claude, nebo do Claude
+Code) – Claude pak bude sám průběžně psát/aktualizovat
+`VIBECODING_CHANGES.txt`, takže při nahrávání už jen zkontroluješ
+předvyplněný popis. Prompt se automaticky přizpůsobí názvu projektu.
 
 ## Co potřebuješ mít nainstalované
 
@@ -90,6 +120,10 @@ Tento soubor už stačí přenášet a spouštět samostatně – `npm install` 
 Node.js na cílovém počítači nejsou potřeba, jen `git` musí být
 nainstalovaný a přihlášený, protože ten aplikace používá pro samotné
 nahrávání na GitHub.
+
+Aplikace i portable `.exe` mají vlastní ikonu (`build/icon.ico` /
+`build/icon.png`) – electron-builder ji použije automaticky, není potřeba
+nic dalšího nastavovat.
 
 ⚠️ Sestavení portable `.exe` musí proběhnout na Windows (nebo se dá
 sestavit i na macOS/Linuxu pro Windows, ale je to složitější kvůli

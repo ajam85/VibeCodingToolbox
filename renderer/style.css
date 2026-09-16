@@ -200,13 +200,23 @@ html, body {
 }
 
 .section-label {
-  display: block;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.03em;
   margin-top: 6px;
+}
+
+.section-label-hint {
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  opacity: 0.75;
 }
 
 .description-box {
@@ -216,14 +226,19 @@ html, body {
   font-family: var(--font-ui);
   font-size: 13px;
   color: var(--text);
-  background: var(--panel);
+  background: var(--panel-alt);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px 12px;
   outline: none;
+  cursor: pointer;
 }
-.description-box:focus {
+.description-box:hover {
   border-color: var(--accent);
+}
+.description-box.is-placeholder {
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .notes-header {
@@ -441,6 +456,37 @@ html, body {
   font-weight: 600;
 }
 
+.dialog-hint {
+  margin: -10px 0 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.dialog-hint-accent {
+  color: var(--accent);
+}
+
+.copy-prompt-btn {
+  margin-top: 8px;
+}
+
+.changes-textarea {
+  width: 100%;
+  min-height: 130px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  outline: none;
+  resize: vertical;
+}
+.changes-textarea:focus {
+  border-color: var(--accent);
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -450,7 +496,8 @@ html, body {
   color: var(--text-muted);
 }
 
-.field input {
+.field input,
+.field textarea {
   font-family: var(--font-ui);
   font-size: 13px;
   color: var(--text);
@@ -461,7 +508,12 @@ html, body {
   outline: none;
 }
 
-.field input:focus {
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
   border-color: var(--accent);
 }
 
@@ -484,8 +536,21 @@ html, body {
 .dialog-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   gap: 8px;
   margin-top: 8px;
+}
+
+#delete-project-btn {
+  margin-right: auto;
+}
+
+.btn-danger {
+  color: var(--danger);
+}
+.btn-danger:hover {
+  color: var(--danger);
+  background: rgba(201, 98, 87, 0.12);
 }
 
 /* --- settings dialog --- */
@@ -565,4 +630,25 @@ html, body {
   font-size: 12px;
   color: var(--text-muted);
   line-height: 1.6;
+}
+
+.history-entry-date {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.history-summary {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
 }
