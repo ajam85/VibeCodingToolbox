@@ -221,20 +221,19 @@ html, body {
 
 .description-box {
   width: 100%;
-  resize: vertical;
-  min-height: 54px;
+  resize: none;
+  border: none;
+  background: transparent;
+  padding: 2px 0;
   font-family: var(--font-ui);
   font-size: 13px;
+  line-height: 1.5;
   color: var(--text);
-  background: var(--panel-alt);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 12px;
   outline: none;
   cursor: pointer;
 }
 .description-box:hover {
-  border-color: var(--accent);
+  color: var(--accent);
 }
 .description-box.is-placeholder {
   color: var(--text-muted);
@@ -295,6 +294,26 @@ html, body {
 
 .note-row.done .note-text {
   text-decoration: line-through;
+}
+
+.note-copy {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.note-copy:hover {
+  color: var(--accent);
+  background: rgba(90, 168, 118, 0.12);
+}
+.note-copy.copied-flash {
+  color: var(--accent);
+  background: rgba(90, 168, 118, 0.2);
 }
 
 .note-remove {

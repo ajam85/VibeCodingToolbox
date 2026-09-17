@@ -1,5 +1,23 @@
 [
   {
+    "version": "2.0.0",
+    "date": "2026-09-16",
+    "changes": {
+      "cs": [
+        "Popis projektu už nevypadá jako editovatelné pole - zobrazuje se jako čistý text",
+        "Přidán export a import zálohy (jednotlivý projekt i všechny najednou, formát JSON)",
+        "Přidáno tlačítko pro kopírování obsahu jednotlivé poznámky",
+        "Portable build nyní staví i alternativní verzi jako složku (win-unpacked) pro případ potíží s jednosouborovým .exe"
+      ],
+      "en": [
+        "Project description no longer looks like an editable field - shown as plain text",
+        "Added backup export and import (single project or all at once, JSON format)",
+        "Added a button to copy the content of a single note",
+        "The portable build now also produces a folder version (win-unpacked) as a fallback if the single-file .exe has issues"
+      ]
+    }
+  },
+  {
     "version": "1.9.2",
     "date": "2026-09-16",
     "changes": {

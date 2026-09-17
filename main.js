@@ -135,6 +135,69 @@ ipcMain.handle("app:info", () => ({
 
 // --- projekty ---
 
+// --- záloha / export / import ---
+
+ipcMain.handle("backup:export-all", async () => {
+  const projects = loadProjects();
+  const result = await dialog.showSaveDialog(mainWindow, {
+    defaultPath: `vibecoding-toolbox-zaloha-${new Date().toISOString().slice(0, 10)}.json`,
+    filters: [{ name: "JSON", extensions: ["json"] }],
+  });
+  if (result.canceled || !result.filePath) return { ok: false };
+  fs.writeFileSync(result.filePath, JSON.stringify(projects, null, 2), "utf-8");
+  return { ok: true, filePath: result.filePath };
+});
+
+ipcMain.handle("backup:export-project", async (event, id) => {
+  const projects = loadProjects();
+  const project = projects.find((p) => p.id === id);
+  if (!project) return { ok: false };
+  const safeName = project.name.replace(/[\\/:*?"<>|]/g, "_") || "projekt";
+  const result = await dialog.showSaveDialog(mainWindow, {
+    defaultPath: `${safeName}-zaloha.json`,
+    filters: [{ name: "JSON", extensions: ["json"] }],
+  });
+  if (result.canceled || !result.filePath) return { ok: false };
+  fs.writeFileSync(result.filePath, JSON.stringify(project, null, 2), "utf-8");
+  return { ok: true, filePath: result.filePath };
+});
+
+ipcMain.handle("backup:import", async () => {
+  const result = await dialog.showOpenDialog(mainWindow, {
+    properties: ["openFile"],
+    filters: [{ name: "JSON", extensions: ["json"] }],
+  });
+  if (result.canceled || result.filePaths.length === 0) {
+    return { ok: false, projects: loadProjects() };
+  }
+
+  let data;
+  try {
+    data = JSON.parse(fs.readFileSync(result.filePaths[0], "utf-8"));
+  } catch {
+    return { ok: false, error: "invalid-json", projects: loadProjects() };
+  }
+
+  const incoming = Array.isArray(data) ? data : [data];
+  const projects = loadProjects();
+  let added = 0;
+  for (const p of incoming) {
+    if (!p || typeof p !== "object" || !p.name) continue;
+    projects.push({
+      branch: "main",
+      lastSync: null,
+      description: "",
+      notes: [],
+      history: [],
+      ...p,
+      id: `${Date.now()}${Math.random().toString(36).slice(2, 6)}`,
+    });
+    added++;
+  }
+  saveProjects(projects);
+  return { ok: added > 0, added, projects };
+});
+
 ipcMain.handle("projects:list", () => loadProjects());
 
 ipcMain.handle("projects:add", (event, project) => {

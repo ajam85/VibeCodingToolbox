@@ -11,6 +11,7 @@ const translations = {
     projectDescriptionPlaceholder: "Krátce, o co v projektu jde...",
     notes: "Poznámky",
     copyAll: "Kopírovat vše",
+    copyNote: "Kopírovat poznámku",
     copied: "Zkopírováno",
     newNotePlaceholder: 'Nová poznámka... (Enter pro přidání)',
     add: "Přidat",
@@ -37,6 +38,13 @@ const translations = {
     addProjectBtn: "Přidat projekt",
     saveChanges: "Uložit změny",
     removeProject: "Odebrat projekt",
+    backup: "Zálohování",
+    exportAll: "Exportovat vše",
+    importBackup: "Importovat zálohu",
+    exportProject: "Exportovat projekt",
+    exported: "Exportováno",
+    imported: (count) => `Importováno projektů: ${count}`,
+    importFailed: "Import se nepovedl - zkontroluj, že jde o platný soubor zálohy.",
     fillAllFields: "Vyplň prosím alespoň název projektu.",
     repoUrlError:
       "Adresa repozitáře by měla vypadat jako\nhttps://github.com/uzivatel/repo.git",
@@ -75,6 +83,7 @@ const translations = {
     projectDescriptionPlaceholder: "Briefly, what this project is about...",
     notes: "Notes",
     copyAll: "Copy all",
+    copyNote: "Copy note",
     copied: "Copied",
     newNotePlaceholder: "New note... (Enter to add)",
     add: "Add",
@@ -101,6 +110,13 @@ const translations = {
     addProjectBtn: "Add project",
     saveChanges: "Save changes",
     removeProject: "Remove project",
+    backup: "Backup",
+    exportAll: "Export all",
+    importBackup: "Import backup",
+    exportProject: "Export project",
+    exported: "Exported",
+    imported: (count) => `Imported projects: ${count}`,
+    importFailed: "Import failed - check that this is a valid backup file.",
     fillAllFields: "Please fill in at least the project name.",
     repoUrlError:
       "The repository address should look like\nhttps://github.com/username/repo.git",
@@ -185,6 +201,9 @@ const masterPromptBox = document.getElementById("master-prompt-box");
 const copyMasterPromptBtn = document.getElementById("copy-master-prompt-btn");
 const addError = document.getElementById("add-error");
 const deleteProjectBtn = document.getElementById("delete-project-btn");
+const exportProjectBtn = document.getElementById("export-project-btn");
+const exportAllBtn = document.getElementById("export-all-btn");
+const importBackupBtn = document.getElementById("import-backup-btn");
 
 const settingsGearBtn = document.getElementById("settings-gear-btn");
 const settingsDialog = document.getElementById("settings-dialog");
@@ -309,6 +328,17 @@ function renderNotes(project) {
       updateNoteText(project.id, note.id, textarea.value);
     });
 
+    const copyNoteBtn = document.createElement("button");
+    copyNoteBtn.className = "note-copy";
+    copyNoteBtn.title = t("copyNote");
+    copyNoteBtn.innerHTML =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>';
+    copyNoteBtn.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(note.text);
+      copyNoteBtn.classList.add("copied-flash");
+      setTimeout(() => copyNoteBtn.classList.remove("copied-flash"), 700);
+    });
+
     const removeNoteBtn = document.createElement("button");
     removeNoteBtn.className = "note-remove";
     removeNoteBtn.textContent = "✕";
@@ -316,6 +346,7 @@ function renderNotes(project) {
 
     row.appendChild(checkbox);
     row.appendChild(textarea);
+    row.appendChild(copyNoteBtn);
     row.appendChild(removeNoteBtn);
     notesList.appendChild(row);
 
@@ -478,6 +509,35 @@ deleteProjectBtn.addEventListener("click", async () => {
   renderAll();
 });
 
+function flashButtonText(btn, text) {
+  const original = btn.textContent;
+  btn.textContent = text;
+  setTimeout(() => (btn.textContent = original), 1400);
+}
+
+exportProjectBtn.addEventListener("click", async () => {
+  if (!editingId) return;
+  const result = await window.api.exportProject(editingId);
+  if (result && result.ok) flashButtonText(exportProjectBtn, t("exported"));
+});
+
+exportAllBtn.addEventListener("click", async () => {
+  const result = await window.api.exportAllProjects();
+  if (result && result.ok) flashButtonText(exportAllBtn, t("exported"));
+});
+
+importBackupBtn.addEventListener("click", async () => {
+  const result = await window.api.importBackup();
+  if (result && result.ok) {
+    projects = result.projects;
+    if (!activeProjectId && projects.length > 0) activeProjectId = projects[0].id;
+    flashButtonText(importBackupBtn, t("imported")(result.added));
+    renderAll();
+  } else if (result && result.error === "invalid-json") {
+    alert(t("importFailed"));
+  }
+});
+
 // --- add / edit project dialog (název, cesta, repo) ---
 
 function updateMasterPrompt() {
@@ -514,6 +574,7 @@ function openDialog(project) {
 
   updateMasterPrompt();
   deleteProjectBtn.classList.toggle("hidden", !project);
+  exportProjectBtn.classList.toggle("hidden", !project);
   addError.classList.add("hidden");
   addDialog.classList.remove("hidden");
   inputName.focus();

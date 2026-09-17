@@ -11,6 +11,9 @@ contextBridge.exposeInMainWorld("api", {
   removeProject: (id) => ipcRenderer.invoke("projects:remove", id),
   pickFolder: () => ipcRenderer.invoke("dialog:pick-folder"),
   getPendingChanges: (source) => ipcRenderer.invoke("project:pending-changes", source),
+  exportAllProjects: () => ipcRenderer.invoke("backup:export-all"),
+  exportProject: (id) => ipcRenderer.invoke("backup:export-project", id),
+  importBackup: () => ipcRenderer.invoke("backup:import"),
   syncProject: (id, lang, changeNotes) => ipcRenderer.invoke("projects:sync", { id, lang, changeNotes }),
   onSyncLog: (callback) =>
     ipcRenderer.on("sync:log", (event, line) => callback(line)),

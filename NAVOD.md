@@ -79,6 +79,15 @@ pak aplikaci spustí. Příště už stačí jen `npm start`.
 Vše se ukládá natrvalo (do uživatelských dat aplikace), takže po zavření
 a znovuotevření zůstane všechno tak, jak jsi to nechal.
 
+## Záloha a export
+
+- V nastavení projektu (ozubené kolo → Zálohování, nebo tlačítko
+  „Exportovat projekt" v nastavení konkrétního projektu) si můžeš uložit
+  data jako `.json` soubor – buď jeden projekt, nebo úplně všechny najednou.
+- Stejný soubor jde zpátky **importovat** (tlačítko „Importovat zálohu")
+  – projekty se přidají k těm stávajícím (nic se nepřepíše), takže se dá
+  bezpečně použít i pro přenesení projektů na jiný počítač.
+
 ## Verzování
 
 Verze aplikace se bere z `package.json` (pole `version`). Historie verzí
@@ -123,7 +132,20 @@ nahrávání na GitHub.
 
 Aplikace i portable `.exe` mají vlastní ikonu (`build/icon.ico` /
 `build/icon.png`) – electron-builder ji použije automaticky, není potřeba
-nic dalšího nastavovat.
+nic dalšího nastavovat. Pokud by se po sestavení pořád zobrazovala
+původní ikona Electronu, jde nejspíš o to, že Windows si starou ikonu
+uložil do mezipaměti – pomůže smazat starou `dist` složku, přejmenovat
+výsledný `.exe` nebo restart Průzkumníka.
+
+⚠️ **Pokud jednosouborové portable `.exe` hlásí chybu jako „chybí
+ffmpeg.dll"** (typicky při spuštění mimo jeho vlastní složku): jde o
+známou nespolehlivost jednosouborového portable formátu – při každém
+spuštění se totiž nejdřív rozbaluje do dočasné složky, a to se občas
+nepovede kompletně (antivirus, oprávnění, síťový disk...). `npm run dist`
+teď kromě `.exe` vytvoří i složku **`dist/win-unpacked`** se vším
+potřebným rovnou pohromadě (žádné rozbalování za běhu). Tuhle celou
+složku stačí zkopírovat/přesunout kamkoliv a spouštět `.exe` uvnitř ní –
+je to stejně přenosné, jen ne jako jediný soubor, a je to spolehlivější.
 
 ⚠️ Sestavení portable `.exe` musí proběhnout na Windows (nebo se dá
 sestavit i na macOS/Linuxu pro Windows, ale je to složitější kvůli
