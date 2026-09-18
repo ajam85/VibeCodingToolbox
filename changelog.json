@@ -1,5 +1,19 @@
 [
   {
+    "version": "2.3.0",
+    "date": "2026-09-18",
+    "changes": {
+      "cs": [
+        "Checkbox „Hotovo\" přesunut z hlavního panelu do dialogu Upravit",
+        "Zelený puntík u názvu projektu v seznamu, pokud má nějaké aktivní (nezaškrtnuté) poznámky"
+      ],
+      "en": [
+        "\"Done\" checkbox moved from the main panel into the Edit dialog",
+        "Green dot next to a project's name in the list when it has active (unchecked) notes"
+      ]
+    }
+  },
+  {
     "version": "2.2.0",
     "date": "2026-09-18",
     "changes": {

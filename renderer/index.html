@@ -44,10 +44,6 @@
           <p id="panel-meta" class="panel-meta"></p>
         </div>
         <div class="panel-header-right">
-          <label class="done-toggle">
-            <input type="checkbox" id="completed-checkbox" />
-            <span data-i18n="doneLabel">Hotovo</span>
-          </label>
           <div class="panel-toolbar">
             <button id="sync-btn" class="btn btn-primary" data-i18n="github">GitHub</button>
             <button id="history-btn" class="btn btn-outline" data-i18n="history">Historie</button>
@@ -114,6 +110,11 @@
         <option value="desktop" data-i18n="platformDesktop">Desktop (Electron)</option>
         <option value="mobile" data-i18n="platformMobile">Mobilní (Android)</option>
       </select>
+    </label>
+
+    <label class="done-toggle done-toggle-field">
+      <input type="checkbox" id="input-completed" />
+      <span data-i18n="doneLabel">Hotovo</span>
     </label>
 
     <label class="field">

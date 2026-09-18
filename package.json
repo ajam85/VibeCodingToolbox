@@ -1,6 +1,6 @@
 {
   "name": "vibecoding-toolbox",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Správa vibecoding projektů - poznámky, popisy a nahrávání na GitHub jedním tlačítkem.",
   "main": "main.js",
   "scripts": {

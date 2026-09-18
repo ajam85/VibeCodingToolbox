@@ -229,9 +229,9 @@ const backlogBtn = document.getElementById("backlog-btn");
 const backlogDialog = document.getElementById("backlog-dialog");
 const backlogListEl = document.getElementById("backlog-list");
 const closeBacklogBtn = document.getElementById("close-backlog-btn");
-const completedCheckbox = document.getElementById("completed-checkbox");
 const platformFilterEl = document.getElementById("platform-filter");
 const inputPlatform = document.getElementById("input-platform");
+const inputCompleted = document.getElementById("input-completed");
 
 const addBtn = document.getElementById("add-btn");
 const addDialog = document.getElementById("add-dialog");
@@ -322,7 +322,9 @@ function renderTabs() {
       (project.completed ? " completed" : "");
 
     const icon = PLATFORM_ICONS[project.platform] || "";
-    tab.innerHTML = `${icon}<span class="tab-label">${escapeHtml(project.name)}</span>`;
+    const hasActiveNotes = (project.notes || []).some((n) => !n.done);
+    const dot = hasActiveNotes ? '<span class="tab-dot"></span>' : "";
+    tab.innerHTML = `${icon}<span class="tab-label">${escapeHtml(project.name)}</span>${dot}`;
 
     tab.addEventListener("click", () => {
       activeProjectId = project.id;
@@ -374,7 +376,6 @@ function renderPanel() {
 
   panelTitle.textContent = project.name;
   panelMeta.textContent = buildMetaLine(project);
-  completedCheckbox.checked = !!project.completed;
 
   const canSync = !!(project.source && project.repo);
   const isSyncing = syncingId === project.id;
@@ -505,15 +506,6 @@ function updateLocalProject(id, updater) {
 descriptionBox.addEventListener("click", () => {
   const project = getActiveProject();
   if (project) openDialog(project);
-});
-
-// --- checkbox Hotovo ---
-
-completedCheckbox.addEventListener("change", async () => {
-  const project = getActiveProject();
-  if (!project) return;
-  await persistProject(project.id, { completed: completedCheckbox.checked });
-  renderAll();
 });
 
 async function toggleNoteDone(projectId, noteId) {
@@ -721,6 +713,7 @@ function openDialog(project) {
     inputRepo.value = project.repo;
     inputDescription.value = project.description || "";
     inputPlatform.value = project.platform || "";
+    inputCompleted.checked = !!project.completed;
   } else {
     dialogTitle.textContent = t("newProject");
     confirmAddBtn.textContent = t("addProjectBtn");
@@ -729,6 +722,7 @@ function openDialog(project) {
     inputRepo.value = "";
     inputDescription.value = "";
     inputPlatform.value = "";
+    inputCompleted.checked = false;
   }
 
   updateMasterPrompt();
@@ -764,6 +758,7 @@ confirmAddBtn.addEventListener("click", async () => {
   const repo = inputRepo.value.trim();
   const description = inputDescription.value.trim();
   const platform = inputPlatform.value;
+  const completed = inputCompleted.checked;
 
   if (!name) {
     addError.textContent = t("fillAllFields");
@@ -777,9 +772,16 @@ confirmAddBtn.addEventListener("click", async () => {
   }
 
   if (editingId) {
-    projects = await window.api.updateProject(editingId, { name, source, repo, description, platform });
+    projects = await window.api.updateProject(editingId, {
+      name,
+      source,
+      repo,
+      description,
+      platform,
+      completed,
+    });
   } else {
-    projects = await window.api.addProject({ name, source, repo, description, platform });
+    projects = await window.api.addProject({ name, source, repo, description, platform, completed });
     const newest = projects[projects.length - 1];
     activeProjectId = newest.id;
   }
