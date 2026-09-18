@@ -14,6 +14,8 @@ contextBridge.exposeInMainWorld("api", {
   exportAllProjects: () => ipcRenderer.invoke("backup:export-all"),
   exportProject: (id) => ipcRenderer.invoke("backup:export-project", id),
   importBackup: () => ipcRenderer.invoke("backup:import"),
+  writeAgentFiles: (source, content, filenames) =>
+    ipcRenderer.invoke("project:write-agent-files", { source, content, filenames }),
   syncProject: (id, lang, changeNotes) => ipcRenderer.invoke("projects:sync", { id, lang, changeNotes }),
   onSyncLog: (callback) =>
     ipcRenderer.on("sync:log", (event, line) => callback(line)),

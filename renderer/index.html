@@ -20,6 +20,15 @@
         <button id="add-btn" class="btn-icon-add" title="Přidat projekt">+</button>
       </div>
     </div>
+    <div id="platform-filter" class="platform-filter">
+      <button class="filter-btn active" data-value="" data-i18n="filterAll">Vše</button>
+      <button class="filter-btn" data-value="desktop" title="Desktop (Electron)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+      </button>
+      <button class="filter-btn" data-value="mobile" title="Mobilní (Android)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+      </button>
+    </div>
     <div id="tab-list" class="tab-list"></div>
   </aside>
 
@@ -34,10 +43,16 @@
           <h1 id="panel-title"></h1>
           <p id="panel-meta" class="panel-meta"></p>
         </div>
-        <div class="panel-toolbar">
-          <button id="sync-btn" class="btn btn-primary" data-i18n="github">GitHub</button>
-          <button id="history-btn" class="btn btn-outline" data-i18n="history">Historie</button>
-          <button id="settings-btn" class="btn btn-outline" data-i18n="edit">Upravit</button>
+        <div class="panel-header-right">
+          <label class="done-toggle">
+            <input type="checkbox" id="completed-checkbox" />
+            <span data-i18n="doneLabel">Hotovo</span>
+          </label>
+          <div class="panel-toolbar">
+            <button id="sync-btn" class="btn btn-primary" data-i18n="github">GitHub</button>
+            <button id="history-btn" class="btn btn-outline" data-i18n="history">Historie</button>
+            <button id="settings-btn" class="btn btn-outline" data-i18n="edit">Upravit</button>
+          </div>
         </div>
       </div>
 
@@ -49,7 +64,10 @@
 
       <div class="notes-header">
         <span class="section-label" data-i18n="notes">Poznámky</span>
-        <button id="copy-all-btn" class="btn btn-outline btn-small" data-i18n="copyAll">Kopírovat vše</button>
+        <div class="notes-header-actions">
+          <button id="backlog-btn" class="btn btn-outline btn-small" data-i18n="backlog">Backlog</button>
+          <button id="copy-all-btn" class="btn btn-outline btn-small" data-i18n="copyAll">Kopírovat vše</button>
+        </div>
       </div>
 
       <div id="notes-list" class="notes-list"></div>
@@ -90,6 +108,15 @@
     </label>
 
     <label class="field">
+      <span data-i18n="platformLabel">Typ projektu</span>
+      <select id="input-platform" class="platform-select">
+        <option value="" data-i18n="platformNone">Nerozlišeno</option>
+        <option value="desktop" data-i18n="platformDesktop">Desktop (Electron)</option>
+        <option value="mobile" data-i18n="platformMobile">Mobilní (Android)</option>
+      </select>
+    </label>
+
+    <label class="field">
       <span data-i18n="projectDescription">Popis projektu</span>
       <textarea id="input-description" class="field-textarea" rows="3" data-i18n-placeholder="projectDescriptionPlaceholder" placeholder="Krátce, o co v projektu jde..."></textarea>
     </label>
@@ -98,6 +125,12 @@
       <span class="section-label" data-i18n="masterPromptLabel">Prompt pro Claude (vlož na začátek práce na projektu)</span>
       <textarea id="master-prompt-box" class="changes-textarea" rows="7" readonly></textarea>
       <button id="copy-master-prompt-btn" class="btn btn-outline btn-small copy-prompt-btn" data-i18n="copyPrompt">Kopírovat prompt</button>
+    </div>
+
+    <div class="settings-group">
+      <span class="section-label" data-i18n="agentFilesLabel">Automaticky pro AI nástroje (CLAUDE.md / AGENTS.md)</span>
+      <p class="dialog-hint" data-i18n="agentFilesHint">Claude Code, Codex, Cursor a další si tyhle soubory načtou sami na začátku práce - nic nekopíruješ, funguje to jen když je nastavená složka projektu.</p>
+      <button id="write-agent-files-btn" class="btn btn-outline btn-small" data-i18n="writeAgentFiles">Zapsat do složky projektu</button>
     </div>
 
     <p id="add-error" class="field-error hidden"></p>
@@ -179,6 +212,17 @@
     <div class="dialog-actions">
       <button id="cancel-changes-btn" class="btn btn-ghost" data-i18n="cancel">Zrušit</button>
       <button id="confirm-changes-btn" class="btn btn-primary" data-i18n="uploadConfirm">Nahrát</button>
+    </div>
+  </div>
+</div>
+
+<div id="backlog-dialog" class="dialog-overlay hidden">
+  <div class="dialog">
+    <h2 data-i18n="backlogTitle">Backlog (hotové poznámky)</h2>
+    <p class="dialog-hint" data-i18n="backlogHint">Zaškrtnutím zpátky vrátíš poznámku do aktivního seznamu.</p>
+    <div id="backlog-list" class="notes-list backlog-list"></div>
+    <div class="dialog-actions">
+      <button id="close-backlog-btn" class="btn btn-outline" data-i18n="close">Zavřít</button>
     </div>
   </div>
 </div>

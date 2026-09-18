@@ -72,6 +72,26 @@ const translations = {
     promptCopied: "Zkopírováno",
     masterPromptText: (name) =>
       `Pracujeme spolu na projektu${name ? ` „${name}"` : ""}, který budu nahrávat přes aplikaci VibeCoding Toolbox.\n\nProsím: kdykoliv na konci naší práce provedeš nebo shrneš změny v kódu tohoto projektu, zapiš (nebo aktualizuj) v kořeni projektu soubor VIBECODING_CHANGES.txt.\n\nKaždý řádek = jedna funkční změna, srozumitelně pro člověka, ve tvaru:\nPřidáno: ...\nOpraveno: ...\nOdebráno: ...\nZměněno: ...\n\nPokud soubor už existuje a jeho obsah ještě nebyl nahrán na GitHub, nové změny k němu přidej, nepřepisuj starý obsah. Nepiš tam nic technického (čísla řádků, názvy commitů) - jen jasné shrnutí pro člověka, který si to přečte před nahráním.`,
+    agentFilesLabel: "Automaticky pro AI nástroje (CLAUDE.md / AGENTS.md)",
+    agentFilesHint:
+      "Claude Code, Codex, Cursor a další si tyhle soubory načtou sami na začátku práce - nic nekopíruješ, funguje to jen když je nastavená složka projektu.",
+    writeAgentFiles: "Zapsat do složky projektu",
+    agentFilesWritten: "Zapsáno",
+    agentFilesNeedSource: "Nejdřív vyber složku projektu (pole „Zdrojová složka\" výše).",
+    filterAll: "Vše",
+    platformLabel: "Typ projektu",
+    platformNone: "Nerozlišeno",
+    platformDesktop: "Desktop (Electron)",
+    platformMobile: "Mobilní (Android)",
+    doneLabel: "Hotovo",
+    backlog: "Backlog",
+    backlogTitle: "Backlog (hotové poznámky)",
+    backlogHint: "Zaškrtnutím zpátky vrátíš poznámku do aktivního seznamu.",
+    noBacklogYet: "Backlog je zatím prázdný.",
+    agentFileContent: (name, description) =>
+      `# ${name || "Projekt"}\n\n${
+        description ? `${description}\n\n` : ""
+      }## Spolupráce s AI (VibeCoding Toolbox)\n\nTento projekt se nahrává na GitHub přes aplikaci VibeCoding Toolbox.\n\nKdykoliv na konci práce provedeš nebo shrneš změny v kódu, zapiš (nebo aktualizuj) v kořeni projektu soubor \`VIBECODING_CHANGES.txt\`.\n\nKaždý řádek = jedna funkční změna, srozumitelně pro člověka, ve tvaru:\n\`\`\`\nPřidáno: ...\nOpraveno: ...\nOdebráno: ...\nZměněno: ...\n\`\`\`\n\nPokud soubor už existuje a jeho obsah ještě nebyl nahrán na GitHub, nové změny k němu přidej, nepřepisuj starý obsah. Nepiš tam nic technického (čísla řádků, názvy commitů) - jen jasné shrnutí pro člověka, který si to přečte před nahráním.\n`,
   },
   en: {
     projects: "Projects",
@@ -144,6 +164,26 @@ const translations = {
     promptCopied: "Copied",
     masterPromptText: (name) =>
       `We're working together on the project${name ? ` "${name}"` : ""}, which I'll be uploading with the VibeCoding Toolbox app.\n\nPlease: whenever you finish or summarize code changes on this project in a session, write (or update) a file named VIBECODING_CHANGES.txt in the project root.\n\nOne line = one functional change, written for a human, in this style:\nAdded: ...\nFixed: ...\nRemoved: ...\nChanged: ...\n\nIf the file already exists and its contents haven't been uploaded to GitHub yet, add the new changes to it instead of overwriting it. Don't include technical details (line numbers, commit hashes) - just a clear summary for a human to read before uploading.`,
+    agentFilesLabel: "Automatic for AI tools (CLAUDE.md / AGENTS.md)",
+    agentFilesHint:
+      "Claude Code, Codex, Cursor and others load these files themselves at the start of a session - nothing to copy, only works once a project folder is set.",
+    writeAgentFiles: "Write to project folder",
+    agentFilesWritten: "Written",
+    agentFilesNeedSource: "First choose a project folder (the \"Source folder\" field above).",
+    filterAll: "All",
+    platformLabel: "Project type",
+    platformNone: "Unspecified",
+    platformDesktop: "Desktop (Electron)",
+    platformMobile: "Mobile (Android)",
+    doneLabel: "Done",
+    backlog: "Backlog",
+    backlogTitle: "Backlog (completed notes)",
+    backlogHint: "Uncheck a note to move it back to the active list.",
+    noBacklogYet: "The backlog is empty for now.",
+    agentFileContent: (name, description) =>
+      `# ${name || "Project"}\n\n${
+        description ? `${description}\n\n` : ""
+      }## Working with AI (VibeCoding Toolbox)\n\nThis project is uploaded to GitHub with the VibeCoding Toolbox app.\n\nWhenever you finish or summarize code changes in a session, write (or update) a file named \`VIBECODING_CHANGES.txt\` in the project root.\n\nOne line = one functional change, written for a human, in this style:\n\`\`\`\nAdded: ...\nFixed: ...\nRemoved: ...\nChanged: ...\n\`\`\`\n\nIf the file already exists and its contents haven't been uploaded to GitHub yet, add the new changes to it instead of overwriting it. Don't include technical details (line numbers, commit hashes) - just a clear summary for a human to read before uploading.\n`,
   },
 };
 
@@ -185,6 +225,13 @@ const notesList = document.getElementById("notes-list");
 const newNoteInput = document.getElementById("new-note-input");
 const addNoteBtn = document.getElementById("add-note-btn");
 const copyAllBtn = document.getElementById("copy-all-btn");
+const backlogBtn = document.getElementById("backlog-btn");
+const backlogDialog = document.getElementById("backlog-dialog");
+const backlogListEl = document.getElementById("backlog-list");
+const closeBacklogBtn = document.getElementById("close-backlog-btn");
+const completedCheckbox = document.getElementById("completed-checkbox");
+const platformFilterEl = document.getElementById("platform-filter");
+const inputPlatform = document.getElementById("input-platform");
 
 const addBtn = document.getElementById("add-btn");
 const addDialog = document.getElementById("add-dialog");
@@ -199,6 +246,7 @@ const inputRepo = document.getElementById("input-repo");
 const inputDescription = document.getElementById("input-description");
 const masterPromptBox = document.getElementById("master-prompt-box");
 const copyMasterPromptBtn = document.getElementById("copy-master-prompt-btn");
+const writeAgentFilesBtn = document.getElementById("write-agent-files-btn");
 const addError = document.getElementById("add-error");
 const deleteProjectBtn = document.getElementById("delete-project-btn");
 const exportProjectBtn = document.getElementById("export-project-btn");
@@ -233,6 +281,7 @@ let activeProjectId = null;
 let syncingId = null;
 let editingId = null; // pro dialog nastavení projektu (název/cesta/repo)
 let appInfo = { version: "", changelog: [] };
+let platformFilter = "";
 
 function getActiveProject() {
   return projects.find((p) => p.id === activeProjectId) || null;
@@ -252,12 +301,29 @@ function autoResize(textarea) {
 
 // --- sidebar tabs ---
 
+const PLATFORM_ICONS = {
+  desktop:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>',
+  mobile:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>',
+};
+
 function renderTabs() {
   tabList.innerHTML = "";
-  for (const project of projects) {
+
+  const visible = projects.filter((p) => !platformFilter || p.platform === platformFilter);
+  const sorted = [...visible].sort((a, b) => (a.completed ? 1 : 0) - (b.completed ? 1 : 0));
+
+  for (const project of sorted) {
     const tab = document.createElement("button");
-    tab.className = "tab-btn" + (project.id === activeProjectId ? " active" : "");
-    tab.textContent = project.name;
+    tab.className =
+      "tab-btn" +
+      (project.id === activeProjectId ? " active" : "") +
+      (project.completed ? " completed" : "");
+
+    const icon = PLATFORM_ICONS[project.platform] || "";
+    tab.innerHTML = `${icon}<span class="tab-label">${escapeHtml(project.name)}</span>`;
+
     tab.addEventListener("click", () => {
       activeProjectId = project.id;
       renderAll();
@@ -265,6 +331,22 @@ function renderTabs() {
     tabList.appendChild(tab);
   }
 }
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+platformFilterEl.addEventListener("click", (e) => {
+  const btn = e.target.closest(".filter-btn");
+  if (!btn) return;
+  platformFilter = btn.dataset.value;
+  platformFilterEl.querySelectorAll(".filter-btn").forEach((b) => {
+    b.classList.toggle("active", b.dataset.value === platformFilter);
+  });
+  renderTabs();
+});
 
 // --- main panel ---
 
@@ -292,6 +374,7 @@ function renderPanel() {
 
   panelTitle.textContent = project.name;
   panelMeta.textContent = buildMetaLine(project);
+  completedCheckbox.checked = !!project.completed;
 
   const canSync = !!(project.source && project.repo);
   const isSyncing = syncingId === project.id;
@@ -306,51 +389,89 @@ function renderPanel() {
   renderNotes(project);
 }
 
+function createNoteRow(project, note) {
+  const row = document.createElement("div");
+  row.className = "note-row" + (note.done ? " done" : "");
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = !!note.done;
+  checkbox.addEventListener("change", () => toggleNoteDone(project.id, note.id));
+
+  const textarea = document.createElement("textarea");
+  textarea.className = "note-text";
+  textarea.value = note.text;
+  textarea.rows = 1;
+  textarea.addEventListener("input", () => autoResize(textarea));
+  textarea.addEventListener("blur", () => {
+    updateNoteText(project.id, note.id, textarea.value);
+  });
+
+  const copyNoteBtn = document.createElement("button");
+  copyNoteBtn.className = "note-copy";
+  copyNoteBtn.title = t("copyNote");
+  copyNoteBtn.innerHTML =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>';
+  copyNoteBtn.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(note.text);
+    copyNoteBtn.classList.add("copied-flash");
+    setTimeout(() => copyNoteBtn.classList.remove("copied-flash"), 700);
+  });
+
+  const removeNoteBtn = document.createElement("button");
+  removeNoteBtn.className = "note-remove";
+  removeNoteBtn.textContent = "✕";
+  removeNoteBtn.addEventListener("click", () => removeNote(project.id, note.id));
+
+  row.appendChild(checkbox);
+  row.appendChild(textarea);
+  row.appendChild(copyNoteBtn);
+  row.appendChild(removeNoteBtn);
+
+  requestAnimationFrame(() => autoResize(textarea));
+  return row;
+}
+
 function renderNotes(project) {
   notesList.innerHTML = "";
-  const notes = [...(project.notes || [])].sort((a, b) => Number(b.id) - Number(a.id));
+  const notes = [...(project.notes || [])]
+    .filter((n) => !n.done)
+    .sort((a, b) => Number(b.id) - Number(a.id));
 
   for (const note of notes) {
-    const row = document.createElement("div");
-    row.className = "note-row" + (note.done ? " done" : "");
+    notesList.appendChild(createNoteRow(project, note));
+  }
+}
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = !!note.done;
-    checkbox.addEventListener("change", () => toggleNoteDone(project.id, note.id));
-
-    const textarea = document.createElement("textarea");
-    textarea.className = "note-text";
-    textarea.value = note.text;
-    textarea.rows = 1;
-    textarea.addEventListener("input", () => autoResize(textarea));
-    textarea.addEventListener("blur", () => {
-      updateNoteText(project.id, note.id, textarea.value);
+function renderBacklogList(project) {
+  backlogListEl.innerHTML = "";
+  if (!project) return;
+  const archived = [...(project.notes || [])]
+    .filter((n) => n.done)
+    .sort((a, b) => {
+      const aTime = a.completedAt ? new Date(a.completedAt).getTime() : Number(a.id);
+      const bTime = b.completedAt ? new Date(b.completedAt).getTime() : Number(b.id);
+      return bTime - aTime;
     });
 
-    const copyNoteBtn = document.createElement("button");
-    copyNoteBtn.className = "note-copy";
-    copyNoteBtn.title = t("copyNote");
-    copyNoteBtn.innerHTML =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>';
-    copyNoteBtn.addEventListener("click", async () => {
-      await navigator.clipboard.writeText(note.text);
-      copyNoteBtn.classList.add("copied-flash");
-      setTimeout(() => copyNoteBtn.classList.remove("copied-flash"), 700);
-    });
+  if (archived.length === 0) {
+    const hint = document.createElement("p");
+    hint.className = "empty-hint";
+    hint.style.padding = "0";
+    hint.textContent = t("noBacklogYet");
+    backlogListEl.appendChild(hint);
+    return;
+  }
 
-    const removeNoteBtn = document.createElement("button");
-    removeNoteBtn.className = "note-remove";
-    removeNoteBtn.textContent = "✕";
-    removeNoteBtn.addEventListener("click", () => removeNote(project.id, note.id));
+  for (const note of archived) {
+    backlogListEl.appendChild(createNoteRow(project, note));
+  }
+}
 
-    row.appendChild(checkbox);
-    row.appendChild(textarea);
-    row.appendChild(copyNoteBtn);
-    row.appendChild(removeNoteBtn);
-    notesList.appendChild(row);
-
-    requestAnimationFrame(() => autoResize(textarea));
+function refreshNotesViews(project) {
+  renderNotes(project);
+  if (!backlogDialog.classList.contains("hidden")) {
+    renderBacklogList(project);
   }
 }
 
@@ -386,16 +507,26 @@ descriptionBox.addEventListener("click", () => {
   if (project) openDialog(project);
 });
 
-// --- notes ---
+// --- checkbox Hotovo ---
+
+completedCheckbox.addEventListener("change", async () => {
+  const project = getActiveProject();
+  if (!project) return;
+  await persistProject(project.id, { completed: completedCheckbox.checked });
+  renderAll();
+});
 
 async function toggleNoteDone(projectId, noteId) {
   updateLocalProject(projectId, (p) => {
     const note = (p.notes || []).find((n) => n.id === noteId);
-    if (note) note.done = !note.done;
+    if (note) {
+      note.done = !note.done;
+      note.completedAt = note.done ? new Date().toISOString() : null;
+    }
   });
   const project = projects.find((p) => p.id === projectId);
   await persistProject(projectId, { notes: project.notes });
-  renderAll();
+  refreshNotesViews(getActiveProject());
 }
 
 async function updateNoteText(projectId, noteId, text) {
@@ -413,7 +544,7 @@ async function removeNote(projectId, noteId) {
   });
   const project = projects.find((p) => p.id === projectId);
   await persistProject(projectId, { notes: project.notes });
-  renderAll();
+  refreshNotesViews(getActiveProject());
 }
 
 async function addNote() {
@@ -423,12 +554,12 @@ async function addNote() {
 
   updateLocalProject(project.id, (p) => {
     p.notes = p.notes || [];
-    p.notes.push({ id: Date.now().toString(), text, done: false });
+    p.notes.push({ id: Date.now().toString(), text, done: false, completedAt: null });
   });
   const updated = projects.find((p) => p.id === project.id);
   await persistProject(project.id, { notes: updated.notes });
   newNoteInput.value = "";
-  renderAll();
+  renderNotes(project);
   newNoteInput.focus();
 }
 
@@ -440,13 +571,24 @@ newNoteInput.addEventListener("keydown", (e) => {
 copyAllBtn.addEventListener("click", async () => {
   const project = getActiveProject();
   if (!project) return;
-  const notes = [...(project.notes || [])].sort((a, b) => Number(b.id) - Number(a.id));
-  const text = notes.map((n) => `[${n.done ? "x" : " "}] ${n.text}`).join("\n");
+  const notes = [...(project.notes || [])]
+    .filter((n) => !n.done)
+    .sort((a, b) => Number(b.id) - Number(a.id));
+  const text = notes.map((n) => `[ ] ${n.text}`).join("\n");
   await navigator.clipboard.writeText(text);
 
   const original = copyAllBtn.textContent;
   copyAllBtn.textContent = t("copied");
   setTimeout(() => (copyAllBtn.textContent = original), 1200);
+});
+
+backlogBtn.addEventListener("click", () => {
+  const project = getActiveProject();
+  renderBacklogList(project);
+  backlogDialog.classList.remove("hidden");
+});
+closeBacklogBtn.addEventListener("click", () => {
+  backlogDialog.classList.add("hidden");
 });
 
 // --- sync ---
@@ -553,6 +695,21 @@ copyMasterPromptBtn.addEventListener("click", async () => {
   setTimeout(() => (copyMasterPromptBtn.textContent = original), 1200);
 });
 
+writeAgentFilesBtn.addEventListener("click", async () => {
+  const source = inputSource.value.trim();
+  if (!source) {
+    alert(t("agentFilesNeedSource"));
+    return;
+  }
+  const content = t("agentFileContent")(inputName.value.trim(), inputDescription.value.trim());
+  const result = await window.api.writeAgentFiles(source, content, ["CLAUDE.md", "AGENTS.md"]);
+  if (result && result.ok) {
+    flashButtonText(writeAgentFilesBtn, t("agentFilesWritten"));
+  } else {
+    alert(t("agentFilesNeedSource"));
+  }
+});
+
 function openDialog(project) {
   editingId = project ? project.id : null;
 
@@ -563,6 +720,7 @@ function openDialog(project) {
     inputSource.value = project.source;
     inputRepo.value = project.repo;
     inputDescription.value = project.description || "";
+    inputPlatform.value = project.platform || "";
   } else {
     dialogTitle.textContent = t("newProject");
     confirmAddBtn.textContent = t("addProjectBtn");
@@ -570,6 +728,7 @@ function openDialog(project) {
     inputSource.value = "";
     inputRepo.value = "";
     inputDescription.value = "";
+    inputPlatform.value = "";
   }
 
   updateMasterPrompt();
@@ -604,6 +763,7 @@ confirmAddBtn.addEventListener("click", async () => {
   const source = inputSource.value.trim();
   const repo = inputRepo.value.trim();
   const description = inputDescription.value.trim();
+  const platform = inputPlatform.value;
 
   if (!name) {
     addError.textContent = t("fillAllFields");
@@ -617,9 +777,9 @@ confirmAddBtn.addEventListener("click", async () => {
   }
 
   if (editingId) {
-    projects = await window.api.updateProject(editingId, { name, source, repo, description });
+    projects = await window.api.updateProject(editingId, { name, source, repo, description, platform });
   } else {
-    projects = await window.api.addProject({ name, source, repo, description });
+    projects = await window.api.addProject({ name, source, repo, description, platform });
     const newest = projects[projects.length - 1];
     activeProjectId = newest.id;
   }

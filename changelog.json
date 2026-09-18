@@ -1,5 +1,37 @@
 [
   {
+    "version": "2.2.0",
+    "date": "2026-09-18",
+    "changes": {
+      "cs": [
+        "Portable build přepnut jen na spolehlivější složkovou variantu (win-unpacked) - řeší chybu chybějícího ffmpeg.dll i špatnou ikonu",
+        "Nový typ projektu (Desktop/Mobilní) s ikonou v záložce a filtrem v pásu projektů",
+        "Nový checkbox „Hotovo\" u projektu - zešedne a přesune se na konec seznamu, jde se k němu kdykoliv vrátit",
+        "Zatržené poznámky teď mizí z hlavní stránky do Backlogu (nové tlačítko/okno), zpětné odškrtnutí je vrátí zpátky"
+      ],
+      "en": [
+        "Portable build now defaults to the more reliable folder build (win-unpacked) - fixes the missing ffmpeg.dll error and the wrong icon",
+        "New project type (Desktop/Mobile) with an icon on the tab and a filter in the project sidebar",
+        "New \"Done\" checkbox on a project - greys out and moves to the end of the list, still reachable any time",
+        "Checked notes now move off the main page into a Backlog (new button/window); unchecking brings them back"
+      ]
+    }
+  },
+  {
+    "version": "2.1.0",
+    "date": "2026-09-17",
+    "changes": {
+      "cs": [
+        "Nová možnost v Nastavení projektu: zapsat CLAUDE.md a AGENTS.md přímo do složky projektu",
+        "Claude Code, Codex, Cursor a další si je pak načtou sami na začátku session - žádné ruční kopírování promptu"
+      ],
+      "en": [
+        "New option in Project settings: write CLAUDE.md and AGENTS.md directly into the project folder",
+        "Claude Code, Codex, Cursor and others then load them automatically at session start - no manual prompt copying"
+      ]
+    }
+  },
+  {
     "version": "2.0.0",
     "date": "2026-09-16",
     "changes": {

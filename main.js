@@ -209,6 +209,8 @@ ipcMain.handle("projects:add", (event, project) => {
     description: "",
     notes: [],
     history: [],
+    platform: "",
+    completed: false,
     ...project,
   });
   saveProjects(projects);
@@ -237,6 +239,20 @@ ipcMain.handle("dialog:pick-folder", async () => {
   });
   if (result.canceled || result.filePaths.length === 0) return null;
   return result.filePaths[0];
+});
+
+ipcMain.handle("project:write-agent-files", (event, { source, content, filenames }) => {
+  if (!source || !fs.existsSync(source)) return { ok: false };
+  const written = [];
+  for (const filename of filenames) {
+    try {
+      fs.writeFileSync(path.join(source, filename), content, "utf-8");
+      written.push(filename);
+    } catch {
+      /* pokračuj i při chybě jednoho souboru */
+    }
+  }
+  return { ok: written.length > 0, written };
 });
 
 const PENDING_CHANGES_FILENAME = "VIBECODING_CHANGES.txt";

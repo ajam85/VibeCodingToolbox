@@ -15,6 +15,14 @@ Electron aplikace pro správu více "vibecoding" projektů na jednom místě:
   přepínač jazyka (čeština/English) a vzhledu (tmavý/světlý), odtud se dá
   otevřít i verzreport
 - aplikace nemá horní panel nabídky (File/Edit/View...)
+- v Nastavení projektu jde nastavit i typ projektu (Desktop/Electron nebo
+  Mobilní/Android) - v záložce se pak zobrazí malá ikona a nad seznamem
+  projektů jde podle typu filtrovat
+- u projektu je checkbox „Hotovo" - zašktnutý projekt zešedne, přeškrtne
+  se a přesune na konec seznamu, ale zůstává plně dostupný pro návrat
+- zaškrtnutím poznámky zmizí z hlavní stránky a přesune se do Backlogu
+  (tlačítko vedle „Kopírovat vše", otevře samostatné okno); zpětné
+  odškrtnutí v Backlogu poznámku vrátí zpátky do aktivního seznamu
 - tlačítko „Historie" u projektu ukazuje, co se poslalo při každém
   předchozím nahrání (kolik souborů, kolik řádků přibylo/ubylo) – to samé
   shrnutí je zapsané i přímo do zprávy commitu v gitu
@@ -45,6 +53,21 @@ na úplný začátek práce na projektu (do chatu s Claude, nebo do Claude
 Code) – Claude pak bude sám průběžně psát/aktualizovat
 `VIBECODING_CHANGES.txt`, takže při nahrávání už jen zkontroluješ
 předvyplněný popis. Prompt se automaticky přizpůsobí názvu projektu.
+
+### CLAUDE.md a AGENTS.md (bez kopírování)
+
+Master prompt se hodí pro chatovou konverzaci, kde Claude nemá přístup k
+souborům na disku. Pokud ale pracuješ v nástroji, který v projektu přímo
+čte a upravuje soubory (Claude Code, Codex, Cursor, Gemini CLI a další),
+existuje ještě lepší cesta: tyhle nástroje si na začátku každé session
+samy automaticky načtou soubor `CLAUDE.md` nebo `AGENTS.md` z kořene
+projektu, pokud tam existuje – nic se nekopíruje ručně.
+
+V „Nastavení projektu" proto je i tlačítko **„Zapsat do složky
+projektu"** (funguje jen když je nastavená zdrojová složka) – zapíše
+oba soubory (`CLAUDE.md` i `AGENTS.md`, aby to fungovalo napříč nástroji)
+s popisem projektu a stejnou instrukcí ohledně `VIBECODING_CHANGES.txt`
+jako master prompt. Stačí to udělat jednou na začátku projektu.
 
 ## Co potřebuješ mít nainstalované
 
@@ -105,11 +128,14 @@ verzi zvyš číslo v `package.json` a přidej nový záznam na začátek
 }
 ```
 
-## Vytvoření portable aplikace (.exe pro Windows)
+## Vytvoření přenosné aplikace pro Windows
 
-Portable verze je jeden `.exe` soubor bez instalace – stačí ho zkopírovat
-kamkoliv (třeba na flash disk) a spustit dvojklikem, nic se přitom
-neinstaluje do systému.
+Předchozí jednosouborové portable `.exe` se ukázalo jako nespolehlivé –
+při každém spuštění se muselo nejdřív rozbalit do dočasné složky, což se
+občas nepovedlo kompletně (antivirus, oprávnění, síťový disk...) a
+projevovalo se to chybou „chybí ffmpeg.dll" nebo špatnou ikonou. Build
+proto teď vytváří rovnou **celou hotovou složku** – nic se za běhu
+nerozbaluje, takže tenhle problém strukturálně nemůže nastat.
 
 Postup:
 
@@ -119,37 +145,28 @@ npm run dist
 ```
 
 Sestavení chvíli trvá (electron-builder si napoprvé stáhne potřebné
-nástroje). Výsledek najdeš ve složce `dist`:
+nástroje). Výsledek najdeš ve složce:
 
 ```
-dist/Nahrat na GitHub-portable.exe
+dist/win-unpacked/
 ```
 
-Tento soubor už stačí přenášet a spouštět samostatně – `npm install` a
-Node.js na cílovém počítači nejsou potřeba, jen `git` musí být
-nainstalovaný a přihlášený, protože ten aplikace používá pro samotné
-nahrávání na GitHub.
+Tuhle celou složku stačí zkopírovat/přesunout kamkoliv (třeba na flash
+disk) a spustit `.exe` uvnitř ní – nic se neinstaluje do systému.
+`npm install` a Node.js na cílovém počítači nejsou potřeba, jen `git`
+musí být nainstalovaný a přihlášený, protože ten aplikace používá pro
+samotné nahrávání na GitHub. Je to přenosné jako celek (celá složka), ne
+jako jediný soubor – to je záměrná změna kvůli spolehlivosti.
 
-Aplikace i portable `.exe` mají vlastní ikonu (`build/icon.ico` /
-`build/icon.png`) – electron-builder ji použije automaticky, není potřeba
-nic dalšího nastavovat. Pokud by se po sestavení pořád zobrazovala
-původní ikona Electronu, jde nejspíš o to, že Windows si starou ikonu
-uložil do mezipaměti – pomůže smazat starou `dist` složku, přejmenovat
-výsledný `.exe` nebo restart Průzkumníka.
+Aplikace i tenhle build mají vlastní ikonu (`build/icon.ico` /
+`build/icon.png`) – electron-builder ji použije automaticky. Pokud by se
+po sestavení pořád zobrazovala původní ikona Electronu, jde nejspíš o
+to, že Windows si starou ikonu uložil do mezipaměti – pomůže smazat
+starou `dist` složku před dalším buildem, nebo restartovat Průzkumníka.
 
-⚠️ **Pokud jednosouborové portable `.exe` hlásí chybu jako „chybí
-ffmpeg.dll"** (typicky při spuštění mimo jeho vlastní složku): jde o
-známou nespolehlivost jednosouborového portable formátu – při každém
-spuštění se totiž nejdřív rozbaluje do dočasné složky, a to se občas
-nepovede kompletně (antivirus, oprávnění, síťový disk...). `npm run dist`
-teď kromě `.exe` vytvoří i složku **`dist/win-unpacked`** se vším
-potřebným rovnou pohromadě (žádné rozbalování za běhu). Tuhle celou
-složku stačí zkopírovat/přesunout kamkoliv a spouštět `.exe` uvnitř ní –
-je to stejně přenosné, jen ne jako jediný soubor, a je to spolehlivější.
-
-⚠️ Sestavení portable `.exe` musí proběhnout na Windows (nebo se dá
-sestavit i na macOS/Linuxu pro Windows, ale je to složitější kvůli
-"wine"). Pokud pracuješ na Windows, výše uvedené dva příkazy stačí.
+⚠️ Sestavení musí proběhnout na Windows (nebo se dá sestavit i na
+macOS/Linuxu pro Windows, ale je to složitější kvůli "wine"). Pokud
+pracuješ na Windows, výše uvedené dva příkazy stačí.
 
 ## Poznámka k bezpečnosti
 
